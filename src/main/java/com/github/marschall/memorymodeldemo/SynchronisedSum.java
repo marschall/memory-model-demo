@@ -1,5 +1,7 @@
 package com.github.marschall.memorymodeldemo;
 
+import java.lang.Thread.UncaughtExceptionHandler;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 public final class SynchronisedSum {
@@ -49,25 +51,29 @@ public final class SynchronisedSum {
 
   public static void main(String[] args) {
     System.out.println("running on " + System.getProperty("os.arch"));
+
+    AtomicBoolean failed = new AtomicBoolean(false);
+    UncaughtExceptionHandler exceptionHandler = (thread, exception) -> failed.set(true);
     for (int i = 0; i < 10_000; i++) {
-      SynchronisedSum sum = new SynchronisedSum(512);
-
-      Thread calculateThread = new Thread(() -> sum.calculate(130816), "calculate-thread");
-      calculateThread.start();
-
       try {
+        SynchronisedSum sum = new SynchronisedSum(512);
+
+        Thread calculateThread = new Thread(() -> sum.calculate(130816), "calculate-thread");
+        calculateThread.setUncaughtExceptionHandler(exceptionHandler);
+        calculateThread.start();
+
         Thread.sleep(1);
-      } catch (InterruptedException e) {
-        System.out.println("interrupted");
-        return;
-      }
 
-      Thread generateThread = new Thread(() -> sum.generate(), "generate-thread");
-      generateThread.start();
+        Thread generateThread = new Thread(() -> sum.generate(), "generate-thread");
+        generateThread.start();
 
-      try {
         calculateThread.join();
         generateThread.join();
+
+        if (failed.get()) {
+          System.err.println("iteration " + i + " failed");
+          return;
+        }
       } catch (InterruptedException e) {
         System.out.println("interrupted");
         return;
