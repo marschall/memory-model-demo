@@ -16,3 +16,10 @@ Epsilon GC
 ```
 java -Xmx64m -XX:+UnlockExperimentalVMOptions -XX:+UseEpsilonGC -jar target/memory-model-demo-0.1.0-SNAPSHOT.jar
 ```
+
+JIT Watch
+---------
+
+```
+java -Xmx64m -XX:+UnlockDiagnosticVMOptions -XX:+TraceClassLoading -XX:+LogCompilation -XX:+PrintAssembly -jar target/memory-model-demo-0.1.0-SNAPSHOT.jar
+```
