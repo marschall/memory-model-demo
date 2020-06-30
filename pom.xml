@@ -113,10 +113,22 @@
         </configuration>
       </plugin>
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+            <index>true</index>
+            <manifest>
+              <mainClass>com.github.marschall.memorymodeldemo.SynchronisedSum</mainClass>
+            </manifest>
+          </archive>
+        </configuration>
+      </plugin>
+      <plugin>
         <artifactId>maven-javadoc-plugin</artifactId>
         <configuration>
           <links>
-            <link>https://docs.oracle.com/javase/8/docs/api/</link>
+            <link>https://docs.oracle.com/en/java/javase/11/docs/api/</link>
           </links>
           <release>11</release>
         </configuration>
@@ -129,6 +141,24 @@
             </goals>
           </execution>
         </executions>
+      </plugin>
+      <!-- 
+        https://medium.com/graalvm/simplifying-native-image-generation-with-maven-plugin-and-embeddable-configuration-d5b283b92f57
+        https://www.graalvm.org/docs/reference-manual/native-image/#integration-with-maven
+       -->
+      <plugin>
+        <groupId>org.graalvm.nativeimage</groupId>
+        <artifactId>native-image-maven-plugin</artifactId>
+        <!-- 
+        <executions>
+          <execution>
+            <goals>
+              <goal>native-image</goal>
+            </goals>
+            <phase>package</phase>
+          </execution>
+        </executions>
+         -->
       </plugin>
       <plugin>
         <artifactId>maven-source-plugin</artifactId>
@@ -196,6 +226,11 @@
         <plugin>
           <artifactId>maven-javadoc-plugin</artifactId>
           <version>3.1.1</version>
+        </plugin>
+        <plugin>
+          <groupId>org.graalvm.nativeimage</groupId>
+          <artifactId>native-image-maven-plugin</artifactId>
+          <version>20.1.0</version>
         </plugin>
         <plugin>
           <artifactId>maven-resources-plugin</artifactId>
