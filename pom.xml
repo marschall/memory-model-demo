@@ -5,9 +5,9 @@
   <artifactId>memory-model-demo</artifactId>
   <version>0.1.0-SNAPSHOT</version>
   
-  <name>Directory Keystore</name>
+  <name>Memory Model Demo</name>
   <inceptionYear>2020</inceptionYear>
-  <description>A keystore that is based on directories.</description>
+  <description>A demonstration of the Java memory model.</description>
 
   <url>https://github.com/marschall/memory-model-demo</url>
 
